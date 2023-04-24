@@ -9,11 +9,11 @@ services:
     volumes:
       - ./front:/usr/local/apache2/htdocs/
     depends_on:
-      - server
+      - back
 
-  server:
-    build: ./server
-    container_name: server
+  back:
+    build: ./back
+    container_name: back
     ports:
       - "9001:3000"
     volumes:
