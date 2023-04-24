@@ -1,0 +1,42 @@
+version: "1"
+
+services:
+  front:
+    build: ./front
+    container_name: front
+    ports:
+      - "8080:80"
+    volumes:
+      - ./front:/usr/local/apache2/htdocs/
+    depends_on:
+      - server
+
+  server:
+    build: ./server
+    container_name: server
+    ports:
+      - "9001:3000"
+    volumes:
+      - ./db.json:/app/server/db.json
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: toughts
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
+    ports:
+      - 3307:3306
+    volumes:
+      - ./db:/var/lib/mysql
+      - ./docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    command: --init-file /docker-entrypoint-initdb.d/toughts.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "--silent", "ping", "-h", "127.0.0.1"]
+      interval: 10s
+      retries: 5

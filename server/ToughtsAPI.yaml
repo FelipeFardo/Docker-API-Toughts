@@ -1,0 +1,84 @@
+openapi: 3.0.0
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: https://github.com/FelipeFardo/Docker-API-Toughts
+info:
+  version: "2.0.0"
+  title: toughtsAPI
+  description: An Api for online toughts.
+paths:
+  /toughts:
+    get:
+      tags:
+        - toughts
+      description: Returns all registered toughts
+      operationId: getToughts
+      parameters:
+        - in: query
+          name: title
+          description: title of tought
+          schema:
+            type: string
+            format: nvarchar(250)
+        - in: query
+          name: limit
+          description: Maximum number of records to return
+          schema:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: All the toughts
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Tought"
+    post:
+      tags:
+        - Tought
+      operationId: register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Tought"
+      responses:
+        "201":
+          description: Successfully registered Tought
+        "400":
+          description: title or actor missing
+        "500":
+          description: Error writing tought info in database
+
+components:
+  schemas:
+    Toughts:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: string
+            description: tought id
+          title:
+            type: string
+            description: o tought
+          actor:
+            type: string
+            description: The author of the thought
+
+    Tought:
+      type: object
+      required:
+        - name
+        - price
+      properties:
+        id:
+          type: string
+          description: tought id
+        title:
+          type: string
+          description: The thought
+        actor:
+          type: string
+          description: The author of the thought
