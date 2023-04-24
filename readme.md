@@ -4,7 +4,7 @@ Pré-requisitos: Ter o docker na máquinha
 
 # clonar o repositório
 
-git clone https://github.com/FelipeFardo/React-Movies-Lib
+git clone https://github.com/FelipeFardo/Docker-API-Toughts
 
 # startar a aplicação
 
